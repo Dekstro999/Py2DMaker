@@ -40,35 +40,28 @@ class AssetsWindow(ctk.CTkFrame):
         self.back_button = ctk.CTkButton(self, text="Regresar", command=self.go_back)
         self.back_button.pack(pady=10)
     
-    def create_btns(self):
+    def create_btns(self, list):
         
-        pass
-        
-
-    def load_characters(self):
         for button in self.character_buttons:
             button.destroy()
         self.character_buttons.clear()
 
-        characters = self.db_manager.get_characters()
-        for character in characters:
+        for character in list:
             btn = ctk.CTkButton(self.character_list_frame, text=character, command=lambda c=character: self.select_character(c))
             btn.pack(pady=2, padx=5, fill="x")
             self.character_buttons.append(btn)
+        
+    def load_characters(self):
+        characters = self.db_manager.get_characters()
+        
+        self.create_btns(characters)
 
     def search_characters(self, event=None):
         search_query = self.search_entry.get().lower()
 
         filtered_characters = [character for character in self.db_manager.get_characters() if search_query in character.lower()]
 
-        for button in self.character_buttons:
-            button.destroy()
-        self.character_buttons.clear()
-
-        for character in filtered_characters:
-            btn = ctk.CTkButton(self.character_list_frame, text=character, command=lambda c=character: self.select_character(c))
-            btn.pack(pady=2, padx=5, fill="x")
-            self.character_buttons.append(btn)
+        self.create_btns(filtered_characters)
 
     def add_new_character(self):
         name = simpledialog.askstring("Nuevo Personaje", "Ingrese el nombre del personaje:")
