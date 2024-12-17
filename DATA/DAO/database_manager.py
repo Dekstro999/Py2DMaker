@@ -14,7 +14,7 @@ class DatabaseManager:
                 cursor.execute('''CREATE TABLE IF NOT EXISTS characters (
                                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                                     name TEXT UNIQUE NOT NULL
-                                  )''')
+                                    )''')
                 success("Base de datos inicializada correctamente.")
         except Exception as e:
             error(f"Error al inicializar la base de datos: {e}")

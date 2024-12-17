@@ -1,31 +1,31 @@
+# FILE: gui/main_window.py
 import customtkinter as ctk
-from gui.assets_window import AssetsWindow
-from DATA.DAO.database_manager import DatabaseManager
+from utils.metodos import clean_widgets
+from utils.colors import *
 
-class MainWindow(ctk.CTk):
-    def __init__(self):
-        super().__init__()
-
-        self.title("Py2DMaker")
-        self.geometry("800x600")
-
-        self.db_manager = DatabaseManager()
-
-        self.create_widgets()
+class MainWindow(ctk.CTkFrame):
+    def __init__(self, parent, db_manager):
+        super().__init__(parent)
+        self.db_manager = db_manager
+        self.parent = parent
+        
 
     def create_widgets(self):
-        self.load_assets_button = ctk.CTkButton(self, text="Cargar Assets", command=self.open_assets_window)
+        clean_widgets(self)
+        
+        self.pack(fill="both", expand=True)
+
+        # Botón para abrir la ventana de assets
+        self.load_assets_button = ctk.CTkButton(self, text="Cargar Assets", command=self.parent.open_assets_window)
         self.load_assets_button.pack(pady=10)
 
-        self.build_mode_button = ctk.CTkButton(self, text="Modo Construir")
+        # Otros botones
+        self.build_mode_button = ctk.CTkButton(self, text="Modo Construir",
+                                                    fg_color=DARK_GREEN, 
+                                                    text_color=WHITE)
         self.build_mode_button.pack(pady=10)
 
-        self.exit_button = ctk.CTkButton(self, text="Salir", command=self.quit)
+        self.exit_button = ctk.CTkButton(self, text="Salir", command=self.quit, 
+                                            fg_color=DARK_RED, 
+                                            text_color=WHITE)
         self.exit_button.pack(pady=10)
-
-    def open_assets_window(self):
-        for widget in self.winfo_children():
-            widget.destroy()
-
-        self.assets_window = AssetsWindow(self, self.db_manager)
-        self.assets_window.pack(fill="both", expand=True)
