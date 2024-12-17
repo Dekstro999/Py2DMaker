@@ -2,13 +2,13 @@ import os
 import customtkinter as ctk
 from tkinter import simpledialog, messagebox
 from utils.file_manager import create_folder
-from utils.metodos import clean_widgets
+from utils.metodos import clean_widgets, CustomDialog
 
 
 class AssetsWindow(ctk.CTkFrame):
-    def __init__(self, parent, db_manager):
+    def __init__(self, parent, db_characters):
         super().__init__(parent)
-        self.db_manager = db_manager
+        self.db_characters = db_characters
         self.parent = parent
         
         # Configuración inicial del frame
@@ -18,7 +18,6 @@ class AssetsWindow(ctk.CTkFrame):
         
         self.pack(fill="both", expand=True)
         
-        # Aquí se define el contenido de la ventana de assets
         self.search_frame = ctk.CTkFrame(self, corner_radius=10)
         self.search_frame.pack(side="top", fill="x", padx=10, pady=10)
 
@@ -52,21 +51,21 @@ class AssetsWindow(ctk.CTkFrame):
             self.character_buttons.append(btn)
         
     def load_characters(self):
-        characters = self.db_manager.get_characters()
+        characters = self.db_characters.get_characters()
         
         self.create_btns(characters)
 
     def search_characters(self, event=None):
         search_query = self.search_entry.get().lower()
 
-        filtered_characters = [character for character in self.db_manager.get_characters() if search_query in character.lower()]
+        filtered_characters = [character for character in self.db_characters.get_characters() if search_query in character.lower()]
 
         self.create_btns(filtered_characters)
 
     def add_new_character(self):
-        name = simpledialog.askstring("Nuevo Personaje", "Ingrese el nombre del personaje:")
+        name = CustomDialog.show(self, "Nuevo Personaje", "Ingresa el nombre del nuevo personaje")
         if name:
-            success = self.db_manager.add_character(name)
+            success = self.db_characters.add_character(name)
             if success:
                 folder_path = os.path.join("assets", "characters", name)
                 create_folder(folder_path)

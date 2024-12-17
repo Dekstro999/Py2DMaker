@@ -8,16 +8,16 @@ from utils.test.notify import success, error, info
 class MainApp(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.db_manager = DatabaseManager()
+        self.db_characters = DatabaseManager("characters.db")
         self.title("Ventana Principal")
         self.geometry("800x600")
         
-        self.main_window = MainWindow(self, self.db_manager)
+        self.main_window = MainWindow(self)
         # self.main_window.pack(fill="both", expand=True)
         
         self.main_window.create_widgets()
         
-        self.assets_window = AssetsWindow(self, self.db_manager)
+        self.assets_window = AssetsWindow(self, self.db_characters)
 
     def open_assets_window(self):
         # self.assets_window.pack(fill="both", expand=True)
