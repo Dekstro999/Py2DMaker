@@ -1,0 +1,49 @@
+# Estructura del Proyecto
+
+- **main.py**: Punto de entrada del programa.
+- **assets**: Carpeta para almacenar los sprites y otros recursos.
+    - **characters/**: Carpeta para los sprites de personajes.
+    - **backgrounds/**: Carpeta para los sprites de fondo.
+- **gui**: Carpeta para las interfaces gráficas.
+    - **main_window.py**: Ventana principal de la aplicación.
+- **utils**: Funciones adicionales.
+    - **file_manager.py**: Manejo de archivos (copiar, eliminar, crear carpetas).
+    - **preview_loader.py**: Previsualización de sprites.
+- **DATA**: Carpeta para la base de datos.
+    - **DAO/**: Gestión de la base de datos.
+        - **database_manager.py**: Gestión de la base de datos.
+- **README.md**: Documentación del proyecto.
+- **requirements.txt**: Dependencias del proyecto.
+
+## Funcionalidades
+
+### Carga de Sprites
+- Cargar sprites desde archivos PNG.
+- Organizar los sprites en carpetas según el nombre del personaje.
+
+### Visualización y Previsualización
+- Vista en tiempo real de los sprites (Idle, Attack, Run, etc.).
+- Previsualización de sprites en la interfaz gráfica.
+
+### Modo Construir
+- Arrastrar y soltar sprites.
+- Rotar sprites.
+- Redimensionar sprites de personajes.
+- Manejo de una cuadrícula para los objetos.
+
+### Base de Datos
+- Almacenar información sobre los sprites (tipos, cantidad, tipo de carga).
+
+## Tecnologías
+
+- **Interfaz Gráfica**: CustomTkinter.
+- **Manipulación de Imágenes y Sprites**: Pygame.
+- **Base de Datos**: SQLite.
+
+## Archivos Clave
+
+- **main.py**
+- **gui/main_window.py**
+- **utils/file_manager.py**
+- **utils/preview_loader.py**
+- **DATA/DAO/database_manager.py**

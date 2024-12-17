@@ -1,0 +1,34 @@
+Py2DMaker/
+│
+├── main.py                    # Punto de entrada de la aplicación
+│
+├── assets/                    # Recursos gráficos y multimedia
+│   ├── characters/            # Sprites de personajes
+│   ├── backgrounds/           # Sprites de fondos
+│   └── icons/                 # Íconos y otros recursos visuales
+│
+├── saves/                     # Guardado de posiciones y partidas
+│   └── partida1.json
+│
+├── gui/                       # Interfaz gráfica
+│   ├── main_window.py         # Ventana principal
+│   └── build_mode_window.py   # Modo construir (ventana o clase nueva)
+│
+├── utils/                     # Funciones adicionales
+│   ├── file_manager.py        # Manejo de archivos
+│   ├── preview_loader.py      # Carga y previsualización de sprites
+│   ├── notify.py              # Notificaciones (mueve test/notify aquí)
+│   └── helpers/               # Otras utilidades genéricas (si crecen más funciones)
+│
+├── DATA/                      # Gestión de datos
+│   ├── DB/                    # Carpeta para los archivos de base de datos (SQLite)
+│   ├── DAO/                   # Capa de acceso a datos
+│   │   └── database_manager.py # Gestión de la base de datos
+│   └── migrations/            # Scripts SQL de migración (opcional para futuras actualizaciones)
+│
+├── tests/                     # Pruebas unitarias y funcionales
+│   └── test_main.py           # Archivo de pruebas de la GUI
+│
+├── README.md                  # Documentación del proyecto
+├── requirements.txt           # Dependencias del proyecto
+└── .gitignore                 # Ignorar archivos innecesarios en el repositorio
