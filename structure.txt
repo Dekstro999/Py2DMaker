@@ -8,17 +8,19 @@ Py2DMaker/
 │   └── icons/                 # Íconos y otros recursos visuales
 │
 ├── saves/                     # Guardado de posiciones y partidas
-│   └── partida1.json
 │
 ├── gui/                       # Interfaz gráfica
 │   ├── main_window.py         # Ventana principal
+│   ├── assets_window.py       # Ventana de gestión de assets
 │   └── build_mode_window.py   # Modo construir (ventana o clase nueva)
 │
 ├── utils/                     # Funciones adicionales
 │   ├── file_manager.py        # Manejo de archivos
 │   ├── preview_loader.py      # Carga y previsualización de sprites
-│   ├── notify.py              # Notificaciones (mueve test/notify aquí)
-│   └── helpers/               # Otras utilidades genéricas (si crecen más funciones)
+│   ├── colors.py              # Constantes de colores
+│   ├── metodos.py             # Métodos adicionales y utilidades
+│   └── test/                  # Pruebas y notificaciones
+│       └── notify.py          # Notificaciones de éxito, error, etc.
 │
 ├── DATA/                      # Gestión de datos
 │   ├── DB/                    # Carpeta para los archivos de base de datos (SQLite)
@@ -27,8 +29,15 @@ Py2DMaker/
 │   └── migrations/            # Scripts SQL de migración (opcional para futuras actualizaciones)
 │
 ├── tests/                     # Pruebas unitarias y funcionales
+│   ├── keys.key               # Archivo de claves para pruebas
 │   └── test_main.py           # Archivo de pruebas de la GUI
+│
+├── .vscode/                   # Configuración de Visual Studio Code
+│   └── launch.json            # Configuración de lanzamiento para depuración
+│
+├── .pytest_cache/             # Caché de pytest
 │
 ├── README.md                  # Documentación del proyecto
 ├── requirements.txt           # Dependencias del proyecto
+├── LICENSE                    # Licencia del proyecto
 └── .gitignore                 # Ignorar archivos innecesarios en el repositorio
