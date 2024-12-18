@@ -6,7 +6,7 @@ from utils.test.notify import success, error, info, warning
 class DatabaseManager:
     def __init__(self, db_name):
         self.db_path = os.path.join(f"DATA/DB/{db_name}")
-        self.init_database()
+        # self.init_database()
 
     def init_database(self):
         """Inicializa la base de datos y crea las tablas necesarias."""

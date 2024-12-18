@@ -2,13 +2,12 @@
 import customtkinter as ctk
 from gui.main_window import MainWindow
 from gui.assets_window import AssetsWindow
-from DATA.DAO.database_manager import DatabaseManager
 from utils.test.notify import success, error, info
 
 class MainApp(ctk.CTk):
     def __init__(self):
         super().__init__()
-        self.db_characters = DatabaseManager("characters.db")
+        
         self.title("Ventana Principal")
         self.geometry("800x600")
         
@@ -17,7 +16,7 @@ class MainApp(ctk.CTk):
         
         self.main_window.create_widgets()
         
-        self.assets_window = AssetsWindow(self, self.db_characters)
+        self.assets_window = AssetsWindow(self)
 
     def open_assets_window(self):
         # self.assets_window.pack(fill="both", expand=True)

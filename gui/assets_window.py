@@ -2,20 +2,23 @@
 import os
 import customtkinter as ctk
 from tkinter import simpledialog, messagebox
+from DATA.DAO.database_manager import DatabaseManager
 from utils.file_manager import create_folder
 from utils.metodos import clean_widgets, CustomDialog
 
 
 class AssetsWindow(ctk.CTkFrame):
-    def __init__(self, parent, db_characters):
+    def __init__(self, parent):
         super().__init__(parent)
-        self.db_characters = db_characters
+        self.db_characters = DatabaseManager("characters.db")
+        # self.db_characters = db_characters
         self.parent = parent
         self.sprite_frame = None
         
         # Configuración inicial del frame
 
     def create_widgets(self):
+        self.db_characters.init_database()
         clean_widgets(self)
         
         self.pack(fill="both", expand=True)
@@ -36,11 +39,14 @@ class AssetsWindow(ctk.CTkFrame):
         self.character_buttons = []
         self.sprites_buttons = []
 
-        self.add_character_button = ctk.CTkButton(self, text="Nuevo Personaje", command=self.add_new_character)
-        self.add_character_button.pack(pady=10)
+        button_frame = ctk.CTkFrame(self)
+        button_frame.pack(pady=5,padx=5, fill="x")
 
-        self.back_button = ctk.CTkButton(self, text="Regresar", command=self.go_back)
-        self.back_button.pack(pady=10)
+        self.add_character_button = ctk.CTkButton(button_frame, text="Nuevo Personaje", command=self.add_new_character)
+        self.add_character_button.pack(side="left", padx=0)
+
+        self.back_button = ctk.CTkButton(button_frame, text="Regresar", command=self.go_back)
+        self.back_button.pack(side="left",padx=3)
     
     def create_btns(self,frame, list, buttons=None, comando=None):
         
@@ -114,7 +120,8 @@ class AssetsWindow(ctk.CTkFrame):
         self.title_label.pack(pady=10)
 
         add_folder_button = ctk.CTkButton(self.sprite_frame, text="Nuevo Sprite", 
-                                        command=lambda: self.add_sprite_folder(character_id, name))
+                                        command=lambda: self.add_sprite_folder(character_id, name),
+                                        width=20)
         add_folder_button.pack(pady=5)
 
         # Mostrar las carpetas de sprites asociadas
@@ -128,5 +135,6 @@ class AssetsWindow(ctk.CTkFrame):
 
     def go_back(self):
         clean_widgets(self)
+        self.db_characters.close_connection()
         self.parent.back_to_main_window()
         pass
