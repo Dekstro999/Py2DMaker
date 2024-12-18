@@ -1,3 +1,4 @@
+# FILE: DATA/DAO/database_manager.py
 import os
 import sqlite3
 from utils.test.notify import success, error, info, warning
@@ -12,22 +13,51 @@ class DatabaseManager:
         try:
             with sqlite3.connect(self.db_path) as conn:
                 cursor = conn.cursor()
+
                 # Tabla de personajes
                 cursor.execute('''CREATE TABLE IF NOT EXISTS characters (
                                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                                     name TEXT UNIQUE NOT NULL
-                                    )''')
-                # Tabla de relaciones (si es necesario en el futuro)
-                cursor.execute('''CREATE TABLE IF NOT EXISTS character_metadata (
+                                )''')
+
+                # Tabla de carpetas de sprites asociadas a personajes
+                cursor.execute('''CREATE TABLE IF NOT EXISTS sprite_folders (
                                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                                     character_id INTEGER NOT NULL,
-                                    key TEXT NOT NULL,
-                                    value TEXT,
+                                    folder_name TEXT NOT NULL,
                                     FOREIGN KEY (character_id) REFERENCES characters (id)
-                                    )''')
+                                )''')
+
                 success("Base de datos inicializada correctamente.")
         except Exception as e:
             error(f"Error al inicializar la base de datos: {e}")
+
+    def add_sprite_folder(self, character_id, folder_name):
+        """Agrega una carpeta de sprites asociada a un personaje."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute('INSERT INTO sprite_folders (character_id, folder_name) VALUES (?, ?)', 
+                            (character_id, folder_name))
+                conn.commit()
+                success(f"Carpeta '{folder_name}' agregada para el personaje con ID {character_id}.")
+                return True
+        except Exception as e:
+            error(f"Error al agregar carpeta de sprites: {e}")
+            return False
+
+    def get_sprite_folders(self, character_id):
+        """Obtiene las carpetas de sprites de un personaje."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT folder_name FROM sprite_folders WHERE character_id = ?", (character_id,))
+                rows = cursor.fetchall()
+                return [row[0] for row in rows]
+        except Exception as e:
+            error(f"Error al obtener carpetas de sprites: {e}")
+            return []
+
 
     def get_characters(self):
         """Obtiene la lista de personajes almacenados."""

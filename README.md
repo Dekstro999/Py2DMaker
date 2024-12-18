@@ -62,7 +62,7 @@ Py2DMaker/
 ├── README.md                  
 ├── requirements.txt           # Dependencias del proyecto  
 ├── LICENSE                    # Licencia del proyecto  
-└── .gitignore                 # Archivos ignorados por Git  
+└── .gitignore                 
 ```  
 
 ## **Requisitos del sistema**  
