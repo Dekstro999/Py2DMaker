@@ -133,7 +133,7 @@ pip install -r requirements.txt
    - Trabaja en una nueva rama con tu mejora o funcionalidad.  
    - Envía tu PR detallando los cambios realizados.  
 
-## **Roadmap**  
+## **[Roadmap](https://www.figma.com/board/ahoSZdE8Z9WRBLZdnD4FpD/RoadMap?node-id=1-15&t=3BEv8szr1agTyrUs-1)**  
 
 ### Fase 1: Configuración inicial y estructura del proyecto  
 - [X] Creación de la estructura de carpetas del proyecto.  
