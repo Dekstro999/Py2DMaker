@@ -1,7 +1,7 @@
 # FILE: gui/assets_window.py
 import os
 import customtkinter as ctk
-from tkinter import simpledialog, messagebox
+from tkinter import messagebox
 from DATA.DAO.database_manager import DatabaseManager
 from utils.file_manager import create_folder
 from utils.metodos import clean_widgets, CustomDialog

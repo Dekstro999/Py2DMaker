@@ -150,33 +150,33 @@ class DatabaseManager:
         except Exception as e:
             error(f"Error al reiniciar la base de datos: {e}")
 
-    def get_character_metadata(self, character_id):
-        """Obtiene los metadatos asociados a un personaje."""
-        try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute("SELECT key, value FROM character_metadata WHERE character_id = ?", (character_id,))
-                rows = cursor.fetchall()
-                return {row[0]: row[1] for row in rows}
-        except Exception as e:
-            error(f"Error al obtener metadatos del personaje: {e}")
-            return {}
+    # def get_character_metadata(self, character_id):
+    #     """Obtiene los metadatos asociados a un personaje."""
+    #     try:
+    #         with sqlite3.connect(self.db_path) as conn:
+    #             cursor = conn.cursor()
+    #             cursor.execute("SELECT key, value FROM character_metadata WHERE character_id = ?", (character_id,))
+    #             rows = cursor.fetchall()
+    #             return {row[0]: row[1] for row in rows}
+    #     except Exception as e:
+    #         error(f"Error al obtener metadatos del personaje: {e}")
+    #         return {}
 
-    def add_character_metadata(self, character_id, key, value):
-        """Agrega o actualiza metadatos para un personaje."""
-        try:
-            with sqlite3.connect(self.db_path) as conn:
-                cursor = conn.cursor()
-                cursor.execute('''INSERT INTO character_metadata (character_id, key, value)
-                                VALUES (?, ?, ?)
-                                ON CONFLICT(character_id, key) DO UPDATE SET value = excluded.value''',
-                                (character_id, key, value))
-                conn.commit()
-                success(f"Metadato '{key}' agregado/actualizado para el personaje con ID {character_id}.")
-                return True
-        except Exception as e:
-            error(f"Error al agregar metadato: {e}")
-            return False
+    # def add_character_metadata(self, character_id, key, value):
+    #     """Agrega o actualiza metadatos para un personaje."""
+    #     try:
+    #         with sqlite3.connect(self.db_path) as conn:
+    #             cursor = conn.cursor()
+    #             cursor.execute('''INSERT INTO character_metadata (character_id, key, value)
+    #                             VALUES (?, ?, ?)
+    #                             ON CONFLICT(character_id, key) DO UPDATE SET value = excluded.value''',
+    #                             (character_id, key, value))
+    #             conn.commit()
+    #             success(f"Metadato '{key}' agregado/actualizado para el personaje con ID {character_id}.")
+    #             return True
+    #     except Exception as e:
+    #         error(f"Error al agregar metadato: {e}")
+    #         return False
 
     def close_connection(self):
         """Método para cerrar conexiones (si se usa fuera de contexto)."""
