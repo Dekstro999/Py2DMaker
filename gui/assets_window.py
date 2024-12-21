@@ -73,7 +73,7 @@ class AssetsWindow(ctk.CTkFrame):
             buttons.append(delete_btn)
         
 
-    def delete_character(self, name):/..,,
+    def delete_character(self, name):
         character = self.db_characters.search_character(name)
         if not character:
             messagebox.showerror("Error", "No se encontró el personaje en la base de datos.")
