@@ -9,7 +9,7 @@ class MainApp(ctk.CTk):
         super().__init__()
         
         self.title("Ventana Principal")
-        self.geometry("800x600")
+        self.geometry("1080x720")
         
         self.main_window = MainWindow(self)
         # self.main_window.pack(fill="both", expand=True)

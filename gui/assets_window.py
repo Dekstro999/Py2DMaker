@@ -3,7 +3,7 @@ import os
 import customtkinter as ctk
 from tkinter import messagebox
 from DATA.DAO.database_manager import DatabaseManager
-from utils.file_manager import create_folder
+from utils.file_manager import create_folder, delete_folder
 from utils.metodos import clean_widgets, CustomDialog
 
 
@@ -14,6 +14,8 @@ class AssetsWindow(ctk.CTkFrame):
         # self.db_characters = db_characters
         self.parent = parent
         self.sprite_frame = None
+
+        
         
         # Configuración inicial del frame
 
@@ -21,25 +23,28 @@ class AssetsWindow(ctk.CTkFrame):
         self.db_characters.init_database()
         clean_widgets(self)
         
+        self.scroll_main = ctk.CTkScrollableFrame(self, width=800, height=600)
+        self.scroll_main.pack(fill="both", expand=True)
+        
         self.pack(fill="both", expand=True)
         
-        self.search_frame = ctk.CTkFrame(self, corner_radius=10)
+        self.search_frame = ctk.CTkFrame(self.scroll_main, corner_radius=10)
         self.search_frame.pack(side="top", fill="x", padx=10, pady=10)
 
         self.search_entry = ctk.CTkEntry(self.search_frame, placeholder_text="Buscar personaje...")
         self.search_entry.pack(fill="x", padx=5, pady=5)
         self.search_entry.bind("<KeyRelease>", self.search_characters)
 
-        self.listbox_frame = ctk.CTkFrame(self, corner_radius=10)
+        self.listbox_frame = ctk.CTkFrame(self.scroll_main, corner_radius=10)
         self.listbox_frame.pack(side="left", fill="both", padx=10, pady=10)
 
-        self.character_list_frame = ctk.CTkScrollableFrame(self.listbox_frame, width=150, height=400)
+        self.character_list_frame = ctk.CTkScrollableFrame(self.listbox_frame, width=180, height=600)
         self.character_list_frame.pack(padx=5, pady=5, fill="both", expand=True)
 
         self.character_buttons = []
         self.sprites_buttons = []
 
-        button_frame = ctk.CTkFrame(self)
+        button_frame = ctk.CTkFrame(self.scroll_main)
         button_frame.pack(pady=5,padx=5, fill="x")
 
         self.add_character_button = ctk.CTkButton(button_frame, text="Nuevo Personaje", command=self.add_new_character)
@@ -48,17 +53,53 @@ class AssetsWindow(ctk.CTkFrame):
         self.back_button = ctk.CTkButton(button_frame, text="Regresar", command=self.go_back)
         self.back_button.pack(side="left",padx=3)
     
-    def create_btns(self,frame, list, buttons=None, comando=None):
-        
+
+    def create_btns(self, frame, list, buttons=None, comando=None):
         for button in buttons:
             button.destroy()
         buttons.clear()
 
         for l in list:
-            btn = ctk.CTkButton(frame, text=l, command=lambda c=l: comando(c))
-            btn.pack(pady=2, padx=5, fill="x")
+            btn_frame = ctk.CTkFrame(frame)
+            btn_frame.pack(pady=2, padx=5, fill="x")
+
+            btn = ctk.CTkButton(btn_frame, text=f"{l}", command=lambda c=l: comando(c))
+            btn.pack(side="left", fill="x", expand=True)
+
+            delete_btn = ctk.CTkButton(btn_frame, text="X", command=lambda c=l: self.delete_character(c), fg_color="red", width=2)
+            delete_btn.pack(side="right", padx=5)
+
             buttons.append(btn)
+            buttons.append(delete_btn)
         
+
+    def delete_character(self, name):/..,,
+        character = self.db_characters.search_character(name)
+        if not character:
+            messagebox.showerror("Error", "No se encontró el personaje en la base de datos.")
+            return
+
+        character_id = character[0]["id"]
+
+        # Eliminar carpetas de sprites asociadas
+        sprite_folders = self.db_characters.get_sprite_folders(character_id)
+        for folder in sprite_folders:
+            folder_path = os.path.join("assets", "characters", name, folder)
+            delete_folder(folder_path)
+
+        # Eliminar la carpeta del personaje
+        character_folder_path = os.path.join("assets", "characters", name)
+        delete_folder(character_folder_path)
+
+        # Eliminar el personaje de la base de datos
+        success = self.db_characters.delete_character(character_id)
+        if success:
+            messagebox.showinfo("Éxito", f"Personaje '{name}' eliminado correctamente.")
+            self.create_widgets()
+            self.load_characters()
+        else:
+            messagebox.showwarning("Error", f"No se pudo eliminar el personaje '{name}'.")
+            
     def load_characters(self):
         characters = self.db_characters.get_characters()
         
@@ -113,7 +154,7 @@ class AssetsWindow(ctk.CTkFrame):
 
         character_id = character[0]["id"]
 
-        self.sprite_frame = ctk.CTkFrame(self, corner_radius=10)
+        self.sprite_frame = ctk.CTkFrame(self.scroll_main, corner_radius=10)
         self.sprite_frame.pack(side="left", fill="both", padx=10, pady=10)
 
         self.title_label = ctk.CTkLabel(self.sprite_frame, text=f"{name}", font=("Arial", 20))
@@ -125,7 +166,7 @@ class AssetsWindow(ctk.CTkFrame):
         add_folder_button.pack(pady=5)
 
         # Mostrar las carpetas de sprites asociadas
-        sprite_folders_frame = ctk.CTkScrollableFrame(self.sprite_frame, width=100, height=400)
+        sprite_folders_frame = ctk.CTkScrollableFrame(self.sprite_frame, width=180, height=400)
         sprite_folders_frame.pack(padx=5, pady=5, fill="both", expand=True)
 
         sprite_folders = self.db_characters.get_sprite_folders(character_id)
