@@ -57,6 +57,24 @@ class DatabaseManager:
         except Exception as e:
             error(f"Error al obtener carpetas de sprites: {e}")
             return []
+        
+    def delete_sprite_folder(self, character_id, folder_name):
+        """Elimina una carpeta de sprites asociada a un personaje."""
+        try:
+            with sqlite3.connect(self.db_path) as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM sprite_folders WHERE character_id = ? AND folder_name = ?", 
+                            (character_id, folder_name))
+                if cursor.rowcount > 0:
+                    conn.commit()
+                    success(f"Carpeta '{folder_name}' eliminada para el personaje con ID {character_id}.")
+                    return True
+                else:
+                    warning(f"No se encontró la carpeta '{folder_name}' para el personaje con ID {character_id}.")
+                    return False
+        except Exception as e:
+            error(f"Error al eliminar carpeta de sprites: {e}")
+            return False
 
 
     def get_characters(self):

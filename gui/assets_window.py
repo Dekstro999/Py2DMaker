@@ -77,7 +77,11 @@ class AssetsWindow(ctk.CTkFrame):
         character = self.db_characters.search_character(name)
         if not character:
             messagebox.showerror("Error", "No se encontró el personaje en la base de datos.")
-            return
+        else:
+            sprite_folders = self.db_characters.get_sprite_folders(character[0]["id"])
+            if not sprite_folders:
+                messagebox.showwarning("Advertencia", f"El personaje '{name}' no tiene carpetas de sprites asociadas.")
+                return
 
         character_id = character[0]["id"]
 
@@ -99,6 +103,12 @@ class AssetsWindow(ctk.CTkFrame):
             self.load_characters()
         else:
             messagebox.showwarning("Error", f"No se pudo eliminar el personaje '{name}'.")
+            success = self.db_characters.delete_sprite_folder(character_id, folder)
+            if success:
+                messagebox.showinfo("Éxito", f"Carpeta '{folder}' eliminada correctamente.")
+                self.select_character(name)
+            else:
+                messagebox.showwarning("Error", f"No se pudo eliminar la carpeta '{folder}'.")
             
     def load_characters(self):
         characters = self.db_characters.get_characters()
