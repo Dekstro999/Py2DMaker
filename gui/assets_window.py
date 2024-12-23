@@ -5,6 +5,7 @@ from tkinter import messagebox
 from DATA.DAO.database_manager import DatabaseManager
 from utils.file_manager import create_folder, delete_folder
 from utils.metodos import clean_widgets, CustomDialog
+from utils.colors import *
 
 
 class AssetsWindow(ctk.CTkFrame):
@@ -66,7 +67,7 @@ class AssetsWindow(ctk.CTkFrame):
             btn = ctk.CTkButton(btn_frame, text=f"{l}", command=lambda c=l: comando(c))
             btn.pack(side="left", fill="x", expand=True)
 
-            delete_btn = ctk.CTkButton(btn_frame, text="X", command=lambda c=l: self.delete_character(c), fg_color="red", width=2)
+            delete_btn = ctk.CTkButton(btn_frame, text="X", command=lambda c=l: self.delete_character(c), fg_color="red",hover_color=DARK_RED, width=2)
             delete_btn.pack(side="right", padx=5)
 
             buttons.append(btn)
